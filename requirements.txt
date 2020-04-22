@@ -1,0 +1,6 @@
+h5py
+opencv-python
+matplotlib
+scipy
+keras
+progressbar
