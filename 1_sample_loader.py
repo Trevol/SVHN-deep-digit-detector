@@ -14,8 +14,8 @@ import digit_detector.region_proposal as rp
 
 def main():
     N_IMAGES = None
-    split = 'test'
-    DIR = os.path.join('annotation/SVHN', split)
+    split = 'train'
+    DIR = os.path.join('./datasets/SVHN', split)
     ANNOTATION_FILE = os.path.join(DIR, "digitStruct.json")
     NEG_OVERLAP_THD = 0.05
     POS_OVERLAP_THD = 0.6
@@ -32,7 +32,7 @@ def main():
                                      rp.OverlapCalculator())
     train_samples, train_labels = extractor.extract_patch(files[:n_train_files], PATCH_SIZE, POS_OVERLAP_THD,
                                                           NEG_OVERLAP_THD)
-    return
+
     extractor = extractor_.Extractor(rp.MserRegionProposer(), ann.SvhnAnnotation(ANNOTATION_FILE),
                                      rp.OverlapCalculator())
     validation_samples, validation_labels = extractor.extract_patch(files[n_train_files:], PATCH_SIZE, POS_OVERLAP_THD,

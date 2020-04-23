@@ -62,7 +62,7 @@ def showAnnotation(fileName, boxes, labels):
 
 def main():
     split = 'train'
-    dir = os.path.join('./SVHN', split)
+    dir = os.path.join('../datasets/SVHN', split)
 
     annotationFile = os.path.join(dir, 'digitStruct.json')
     annotation = SvhnAnnotation(annotationFile)

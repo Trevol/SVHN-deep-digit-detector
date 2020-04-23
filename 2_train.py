@@ -6,14 +6,14 @@ import cv2
 import digit_detector.preprocess as preproc
 import digit_detector.train as train_
 
-DIR = '../datasets/svhn'
-NB_FILTERS = 32
-NB_EPOCH = 5
 
-DETECTOR_FILE = 'detector_model.hdf5'
-RECOGNIZER_FILE = 'recognize_model.hdf5'
+def main():
+    DIR = '.'
+    NB_FILTERS = 32
+    NB_EPOCH = 5
+    DETECTOR_FILE = 'detector_model.hdf5'
+    RECOGNIZER_FILE = 'recognize_model.hdf5'
 
-if __name__ == "__main__":
     images_train = file_io.FileHDF5().read(os.path.join(DIR, "train.hdf5"), "images")
     labels_train = file_io.FileHDF5().read(os.path.join(DIR, "train.hdf5"), "labels")
 
@@ -24,8 +24,9 @@ if __name__ == "__main__":
     X_train, X_val, Y_train, Y_val, mean_value = preproc.GrayImgTrainPreprocessor().run(images_train, labels_train,
                                                                                         images_val, labels_val, 2)
     print(f"mean value of the train images : {mean_value}")  # 107.524
-    print(
-        f"Train image shape is {X_train.shape}, and Validation image shape is {X_val.shape}")  # (457723, 32, 32, 1), (113430, 32, 32, 1)
+    print(f"Train image shape is {X_train.shape}, and Validation image shape is {X_val.shape}")
+    # (457723, 32, 32, 1), (113430, 32, 32, 1)
+
     train_.train_detector(X_train, X_val, Y_train, Y_val, nb_filters=NB_FILTERS, nb_epoch=NB_EPOCH, nb_classes=2,
                           save_file=DETECTOR_FILE)
 
@@ -33,7 +34,12 @@ if __name__ == "__main__":
     X_train, X_val, Y_train, Y_val, mean_value = preproc.GrayImgTrainPreprocessor().run(images_train, labels_train,
                                                                                         images_val, labels_val, 10)
     print(f"mean value of the train images : {mean_value}".format())  # 112.833
-    print(f"Train image shape is {X_train.shape}, and Validation image shape is {X_val.shape}")  # (116913, 32, 32, 1), (29456, 32, 32, 1)
+    print(
+        f"Train image shape is {X_train.shape}, and Validation image shape is {X_val.shape}")  # (116913, 32, 32, 1), (29456, 32, 32, 1)
     train_.train_detector(X_train, X_val, Y_train, Y_val, nb_filters=NB_FILTERS, nb_epoch=NB_EPOCH, nb_classes=10,
                           save_file=RECOGNIZER_FILE)
     # acc: 0.9541 - val_loss: 0.2125 - val_acc: 0.9452
+
+
+if __name__ == "__main__":
+    main()

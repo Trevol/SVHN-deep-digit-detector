@@ -116,19 +116,26 @@ class DigitSpotter:
             y_pred = probs_.argmax(axis=1)
         
         if show_result:
+            # Add extra height for labels visibility
+            imageHeight = image.shape[0]
+            image = np.vstack([np.zeros_like(image), image])
             for i, bb in enumerate(bbs):
-                
-                # todo : show module 정리
-                image = show.draw_box(image, bb, 2)
-                
                 y1, y2, x1, x2 = bb
-                msg = "{0}".format(y_pred[i])
-                cv2.putText(image, msg, (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), thickness=2)
+                y1 = y1 + imageHeight
+                y2 = y2 + imageHeight
+                bb = y1, y2, x1, x2
+
+                image = show.draw_box(image, bb, 1)
+
+                msg = f"{y_pred[i]}"
+                cv2.putText(image, msg, (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, .7, (0,0,255), thickness=1)
                 
             cv2.imshow("MSER + CNN", image)
-            cv2.waitKey(0)
+            key = cv2.waitKey(0)
+            if key == 27:
+                return bbs, probs, key
         
-        return bbs, probs
+        return bbs, probs, None
 
 
     def _get_thresholded_boxes(self, bbs, patches, probs, threshold):

@@ -19,6 +19,7 @@
 import h5py
 import optparse
 from json import JSONEncoder
+import os
 
 
 # The DigitStructFile is just a wrapper around the h5py data.  It basically references
@@ -111,8 +112,9 @@ def main():
     # jsonFile = options.json
 
     split = 'extra'
-    matFile = f'/home/trevol/hdd/Datasets/SVHN/{split}/digitStruct.mat'
-    jsonFile = f'/home/trevol/hdd/Datasets/SVHN/{split}/digitStruct.json'
+    dir = f'../datasets/SVHN/{split}'
+    matFile = os.path.join(dir, f'digitStruct.mat')
+    jsonFile = os.path.join(dir, f'digitStruct.json')
 
     dsf = DigitStructFile(matFile)
     dataset = dsf.getAllDigitStructure_ByDigit(verbose=True)
