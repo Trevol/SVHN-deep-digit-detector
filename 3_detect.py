@@ -9,6 +9,7 @@ import digit_detector.detect as detector
 import digit_detector.file_io as file_io
 import digit_detector.preprocess as preproc
 import digit_detector.classify as cls
+from utils.image_utils import fit_image_to_shape
 
 
 def main():
@@ -21,9 +22,11 @@ def main():
     model_input_shape = (32, 32, 1)
     # DIR = './datasets/SVHN/train'
     DIR = './datasets/counter_images'
+    # pattern = "*.png"
+    pattern = "*.jpg"
 
     # 1. image files
-    img_files = file_io.list_files(directory=DIR, pattern="*.png", recursive_option=False, n_files_to_sample=None,
+    img_files = file_io.list_files(directory=DIR, pattern=pattern, recursive_option=False, n_files_to_sample=None,
                                    random_order=False)
 
     preproc_for_detector = preproc.GrayImgPreprocessor(mean_value_for_detector)
@@ -37,6 +40,7 @@ def main():
     for img_file in img_files[0:]:
         # 2. image
         img = cv2.imread(img_file)
+        img = fit_image_to_shape(img, (950, 1850))
         bbs, probs, key = digit_spotter.run(img, threshold=0.5, do_nms=True, nms_threshold=0.1)
         if key == 27:
             break
